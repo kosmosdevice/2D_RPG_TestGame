@@ -5,10 +5,18 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
+
     public Slider slider;
     public Gradient gradient;
     public Image fill;
-    
+    public Text hpText;
+    [SerializeField] HealthManager healthmana;
+
+    void Update()
+    {
+        hpText.text = "HP: " + healthmana.currentHealth + "/" + healthmana.maxHealth;
+    }
+
     public void SetMaxHealth(int health)
     {
         slider.maxValue = health;
