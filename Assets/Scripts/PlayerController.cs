@@ -2,14 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-
+public class PlayerController : Character
 { 
     private Rigidbody2D myRB;
     private Animator myAnim;
-
-    [SerializeField]
-    private float speed;
 
     [SerializeField]
     protected ManaManager manaManager;
@@ -22,16 +18,24 @@ public class PlayerController : MonoBehaviour
 
     private Coroutine attackRoutine;
 
+    public Transform MyTarget
+    {
+        get;
+        set;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+
+
         myRB = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
     }
 
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         myRB.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * speed * Time.deltaTime;
 
@@ -71,6 +75,7 @@ public class PlayerController : MonoBehaviour
             //StopAttackMeele(); Borttagen för quick meele
             AttackActive = false;
         }
+        base.Update();
 
     }
 
