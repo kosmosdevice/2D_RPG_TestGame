@@ -51,3 +51,6 @@ TagManager:
   - name: GameObjects
     uniqueID: 2085795613
     locked: 0
+  - name: Powers
+    uniqueID: 1327365871
+    locked: 0
