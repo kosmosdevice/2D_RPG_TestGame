@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     protected ManaManager manaManager;
 
+    [SerializeField]
+    private GameObject[] spellPrefab;
+
     private bool isAttacking;
     private bool AttackActive = false;
 
@@ -46,20 +49,15 @@ public class PlayerController : MonoBehaviour
         //myRB.velocity = Vector2.zero;
         //}
 
-        if (isAttacking)
+        if (Input.GetMouseButtonDown(1))//Meele attack (left mouse button)
         {
-            myRB.velocity = Vector2.zero;
-        }
-
-        if (Input.GetMouseButtonDown(0))//Meele attack (left mouse button)
-        {
-            if (!isAttacking && myRB.velocity == Vector2.zero)
+            if (!isAttacking) //&& myRB.velocity == Vector2.zero)
             {
                 attackRoutine = StartCoroutine(MeeleAttack());
             }
         }
 
-        if (Input.GetMouseButtonDown(1))//Spell attack (right mouse button)
+        if (Input.GetKeyDown(KeyCode.Alpha2))//Spell attack (right mouse button)
         {
             if (!isAttacking && myRB.velocity == Vector2.zero && manaManager.currentMana >= 50f)
             {
@@ -70,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (myRB.velocity != Vector2.zero & AttackActive == true)
         {
             StopAttack();
-            StopAttackMeele();
+            //StopAttackMeele(); Borttagen för quick meele
             AttackActive = false;
         }
 
@@ -78,10 +76,10 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator MeeleAttack()
     {
-        AttackActive = true;
+        //AttackActive = true;
         isAttacking = true;
         myAnim.SetBool("isAttacking", isAttacking);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         //manaManager.UseMana(50f); Byt till stanima senare
         Debug.Log("Meele Attack Done");
         StopAttackMeele();
@@ -95,8 +93,9 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         myAnim.SetBool("isAttacking", isAttacking);
         yield return new WaitForSeconds(3);
+        CastSpell();
         manaManager.UseMana(50f);
-        Debug.Log("Attack Done");
+        //Debug.Log("Attack Done");
         StopAttack();
               
     }
@@ -108,7 +107,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(attackRoutine);
             isAttacking = false;
             myAnim.SetBool("isAttacking", false);
-            Debug.Log("Meele Attack Off");
+            //Debug.Log("Meele Attack Off");
             AttackActive = false;
         }
     }
@@ -120,9 +119,14 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(attackRoutine);
             isAttacking = false;
             myAnim.SetBool("isAttacking", false);
-            Debug.Log("Attack Off");
+            //Debug.Log("Attack Off");
             AttackActive = false;
         }
+    }
+
+    public void CastSpell()
+    {
+        Instantiate(spellPrefab[0],transform.position, Quaternion.identity);
     }
 
 }
