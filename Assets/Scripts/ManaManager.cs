@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ManaManager : MonoBehaviour
 { 
-   public int maxMana = 100;
-   public int currentMana;
+   public float maxMana = 100f;
+   public float currentMana;
    
    public ManaBar manaBar;
    
@@ -17,18 +17,37 @@ public class ManaManager : MonoBehaviour
    
    void Update()
    {
-        if (currentMana >= 10)
+        if (currentMana >= 10f)
         {
             if (Input.GetKeyDown("space"))
             {
-                UseMana(10);
+                UseMana(10f);
             }
         }
-   }
+
+        if (currentMana < maxMana)
+        {
+            AddMana();
+        }
+    }
    
-   void UseMana(int mana)
+   public void UseMana(float mana)
    {
         currentMana -= mana;
         manaBar.SetMana(currentMana);
    }
+
+    public void Spells(float fireball, float icebolt)
+    {
+        fireball = 50f;
+
+        icebolt = 25f;
+    }
+
+    void AddMana()
+    {
+        currentMana += 5f * Time.deltaTime;
+        manaBar.SetMana(currentMana);
+
+    }
 }

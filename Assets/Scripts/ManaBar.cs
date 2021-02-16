@@ -13,14 +13,14 @@ public class ManaBar : MonoBehaviour
     [SerializeField] ManaManager manamana;
 
     // Start is called before the first frame update
-    public void SetMaxMana(int mana)
+    public void SetMaxMana(float mana)
     {
         manaSlider.maxValue = mana;
         manaSlider.value = mana;
         fill.color = gradient.Evaluate(1f);
     }
 
-    public void SetMana(int mana)
+    public void SetMana(float mana)
     {
         manaSlider.value = mana;
         fill.color = gradient.Evaluate(manaSlider.normalizedValue);
@@ -29,7 +29,7 @@ public class ManaBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        manaText.text = "Mana: " + manamana.currentMana;
+        manaText.text = "Mana";
     }
 
 }
