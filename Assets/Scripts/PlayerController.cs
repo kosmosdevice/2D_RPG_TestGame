@@ -46,7 +46,12 @@ public class PlayerController : MonoBehaviour
         //myRB.velocity = Vector2.zero;
         //}
 
-        if (Input.GetMouseButtonDown(0))//Meele attack (right mouse button)
+        if (isAttacking)
+        {
+            myRB.velocity = Vector2.zero;
+        }
+
+        if (Input.GetMouseButtonDown(0))//Meele attack (left mouse button)
         {
             if (!isAttacking && myRB.velocity == Vector2.zero)
             {
@@ -76,7 +81,7 @@ public class PlayerController : MonoBehaviour
         AttackActive = true;
         isAttacking = true;
         myAnim.SetBool("isAttacking", isAttacking);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.5f);
         //manaManager.UseMana(50f); Byt till stanima senare
         Debug.Log("Meele Attack Done");
         StopAttackMeele();
