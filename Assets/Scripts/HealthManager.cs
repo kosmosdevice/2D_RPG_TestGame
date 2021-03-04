@@ -15,6 +15,9 @@ public class HealthManager : MonoBehaviour
 
     public HealthBar healthBar;
 
+    [SerializeField]
+    public PotionScript potionscript;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -69,6 +72,11 @@ public class HealthManager : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+    }
+
+    public void AddHealth()
+    {
+        healthBar.SetHealth(currentHealth);
     }
 
 }

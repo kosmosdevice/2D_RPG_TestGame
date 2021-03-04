@@ -10,25 +10,23 @@ public class PlayerController : Character
     [SerializeField]
     protected ManaManager manaManager;
 
-    [SerializeField]
-    private GameObject[] spellPrefab;
+    public GameManager gameManager;
+
+    private SpellBook spellBook;
 
     private bool isAttacking;
+
     private bool AttackActive = false;
+
+    private bool hasTarget;
 
     private Coroutine attackRoutine;
 
-    public Transform MyTarget
-    {
-        get;
-        set;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-
-
+        spellBook = GetComponent<SpellBook>();
         myRB = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
     }
@@ -61,13 +59,7 @@ public class PlayerController : Character
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))//Spell attack (right mouse button)
-        {
-            if (!isAttacking && myRB.velocity == Vector2.zero && manaManager.currentMana >= 50f)
-            {
-                attackRoutine = StartCoroutine(SpellAttack());
-            }                       
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha2))//Spell attack (right mouse button)
         
         if (myRB.velocity != Vector2.zero & AttackActive == true)
         {
@@ -92,13 +84,16 @@ public class PlayerController : Character
     }
 
     //player attack with obj
-    private IEnumerator SpellAttack()
+    private IEnumerator SpellAttack(int spellIndex)
     {
+        SpellManager newSpell = spellBook.CastSpell(spellIndex);
+
         AttackActive = true;
         isAttacking = true;
         myAnim.SetBool("isAttacking", isAttacking);
-        yield return new WaitForSeconds(3);
-        CastSpell();
+        yield return new WaitForSeconds(newSpell.MyCastTime);
+        Spell s = Instantiate(newSpell.MySpellPrefab, transform.position, Quaternion.identity).GetComponent<Spell>();
+        s.target = gameManager.target;
         manaManager.UseMana(50f);
         //Debug.Log("Attack Done");
         StopAttack();
@@ -129,9 +124,13 @@ public class PlayerController : Character
         }
     }
 
-    public void CastSpell()
+    public void CastSpell(int spellIndex)
     {
-        Instantiate(spellPrefab[0],transform.position, Quaternion.identity);
+        if (!isAttacking && myRB.velocity == Vector2.zero && manaManager.currentMana >= 50f)
+        {
+            attackRoutine = StartCoroutine(SpellAttack(spellIndex));
+
+        }        
     }
 
 }
